@@ -23,7 +23,12 @@ function Contact() {
         </Typography>
       </div>
       <div style={{ margin: "auto", width: "50%" }}>
-        <Grid container spacing={2}>
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={2}
+          style={{ paddingBottom: "16px" }}
+        >
           <Grid item lg={6}>
             <Typography>First Name</Typography>
             <TextField fullWidth size="small" />
@@ -32,8 +37,6 @@ function Contact() {
             <Typography>Last Name</Typography>
             <TextField fullWidth size="small" />
           </Grid>
-        </Grid>
-        <Grid container spacing={2}>
           <Grid item lg={6}>
             <Typography>Email</Typography>
             <TextField fullWidth size="small" />
@@ -42,13 +45,16 @@ function Contact() {
             <Typography>Phone</Typography>
             <TextField fullWidth size="small" />
           </Grid>
+          <Grid item lg={12}>
+            <Typography>Message</Typography>
+            <TextField fullWidth size="small" />
+          </Grid>
         </Grid>
-        <Grid>
-          <Typography>Message</Typography>
-          <TextField fullWidth size="small" />
-        </Grid>
-        <Grid container justifyContent="center">
-          <Button variant="contained" color="primary">
+        <Grid container justifyContent="flex-end">
+          <Button
+            variant="contained"
+            style={{ backgroundColor: "pink", color: "black" }}
+          >
             Submit
           </Button>
         </Grid>
