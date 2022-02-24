@@ -1,9 +1,33 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Typography, TextField, Grid, Button } from "@mui/material";
+import emailjs from "@emailjs/browser";
+import { emailConfig } from "../../constants/emailConfiguration";
 
 function Contact() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm(
+        emailConfig.SERVICE_ID,
+        emailConfig.TEMPLATE_ID,
+        form.current,
+        emailConfig.USER_ID
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
+
   return (
-    <div style={{ paddingBottom: "32px" }}>
+    <form style={{ marginBottom: "32px" }} ref={form} onSubmit={sendEmail}>
       <div
         style={{
           display: "flex",
@@ -31,35 +55,48 @@ function Contact() {
         >
           <Grid item lg={6}>
             <Typography>First Name</Typography>
-            <TextField fullWidth size="small" />
+            <TextField name="first_name" type="text" fullWidth size="small" />
           </Grid>
           <Grid item lg={6}>
             <Typography>Last Name</Typography>
-            <TextField fullWidth size="small" />
+            <TextField name="last_name" type="text" fullWidth size="small" />
           </Grid>
           <Grid item lg={6}>
             <Typography>Email</Typography>
-            <TextField fullWidth size="small" />
+            <TextField name="email" type="email" fullWidth size="small" />
           </Grid>
           <Grid item lg={6}>
             <Typography>Phone</Typography>
-            <TextField fullWidth size="small" />
+            <TextField name="phone" type="tel" fullWidth size="small" />
+          </Grid>
+          <Grid item lg={12}>
+            <Typography>Address</Typography>
+            <TextField name="address" type="text" fullWidth size="small" />
           </Grid>
           <Grid item lg={12}>
             <Typography>Message</Typography>
-            <TextField fullWidth size="small" />
+            <TextField
+              name="message"
+              type="text"
+              fullWidth
+              multiline
+              minRows={4}
+              maxRows={4}
+              size="small"
+            />
           </Grid>
         </Grid>
         <Grid container justifyContent="flex-end">
           <Button
             variant="contained"
+            type="submit"
             style={{ backgroundColor: "pink", color: "black" }}
           >
-            Submit
+            <strong>Submit</strong>
           </Button>
         </Grid>
       </div>
-    </div>
+    </form>
   );
 }
 
