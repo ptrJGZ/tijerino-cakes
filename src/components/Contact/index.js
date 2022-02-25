@@ -1,10 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Typography, TextField, Grid, Button } from "@mui/material";
 import emailjs from "@emailjs/browser";
 import { emailConfig } from "../../constants/emailConfiguration";
 
+const initialForm = {
+  firstName: "",
+  email: "",
+  phone: "",
+  message: "",
+};
+
 function Contact() {
   const form = useRef();
+  const [contactForm, setContactForm] = useState(initialForm);
+
+  console.log(contactForm);
+
+  const validateEmail = () => {};
+  const validateForm = () => {};
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -24,6 +37,15 @@ function Contact() {
           console.log(error.text);
         }
       );
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+
+    setContactForm((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   return (
@@ -54,27 +76,45 @@ function Contact() {
           style={{ paddingBottom: "16px" }}
         >
           <Grid item lg={6}>
-            <Typography>First Name</Typography>
-            <TextField name="first_name" type="text" fullWidth size="small" />
+            <Typography>First Name*</Typography>
+            <TextField
+              name="firstName"
+              type="text"
+              fullWidth
+              size="small"
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item lg={6}>
             <Typography>Last Name</Typography>
-            <TextField name="last_name" type="text" fullWidth size="small" />
+            <TextField name="lastName" type="text" fullWidth size="small" />
           </Grid>
           <Grid item lg={6}>
-            <Typography>Email</Typography>
-            <TextField name="email" type="email" fullWidth size="small" />
+            <Typography>Email*</Typography>
+            <TextField
+              name="email"
+              type="email"
+              fullWidth
+              size="small"
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item lg={6}>
-            <Typography>Phone</Typography>
-            <TextField name="phone" type="tel" fullWidth size="small" />
+            <Typography>Phone*</Typography>
+            <TextField
+              name="phone"
+              type="tel"
+              fullWidth
+              size="small"
+              onChange={handleChange}
+            />
           </Grid>
           <Grid item lg={12}>
             <Typography>Address</Typography>
             <TextField name="address" type="text" fullWidth size="small" />
           </Grid>
           <Grid item lg={12}>
-            <Typography>Message</Typography>
+            <Typography>Message*</Typography>
             <TextField
               name="message"
               type="text"
@@ -83,14 +123,21 @@ function Contact() {
               minRows={4}
               maxRows={4}
               size="small"
+              onChange={handleChange}
             />
           </Grid>
         </Grid>
         <Grid container justifyContent="flex-end">
           <Button
+            disabled={
+              !contactForm.firstName ||
+              !contactForm.email ||
+              !contactForm.phone ||
+              !contactForm.message
+            }
             variant="contained"
             type="submit"
-            style={{ backgroundColor: "pink", color: "black" }}
+            sx={{ backgroundColor: "pink", color: "black" }}
           >
             <strong>Submit</strong>
           </Button>
