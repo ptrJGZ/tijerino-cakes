@@ -17,11 +17,18 @@ function Contact() {
   console.log(contactForm);
 
   const validateEmail = (email) => {
-    let re =
+    const re =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return re.test(email);
   };
+
+  const validatePhone = (phone) => {
+    const re = /^\d{10,12}$/;
+
+    return re.test(phone);
+  };
+
   const validateForm = () => {};
 
   const sendEmail = (e) => {
@@ -137,7 +144,7 @@ function Contact() {
             disabled={
               !contactForm.firstName ||
               !validateEmail(contactForm.email) ||
-              !contactForm.phone ||
+              !validatePhone(contactForm.phone) ||
               !contactForm.message
             }
             variant="contained"
