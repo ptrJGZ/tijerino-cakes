@@ -18,7 +18,7 @@ function Contact() {
 
   const validateEmail = (email) => {
     const re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return re.test(email);
   };
@@ -29,7 +29,7 @@ function Contact() {
     return re.test(phone);
   };
 
-  const validateForm = () => {};
+  // const validateForm = () => {};
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -61,7 +61,7 @@ function Contact() {
   };
 
   return (
-    <form style={{ marginBottom: "32px" }} ref={form} onSubmit={sendEmail}>
+    <form style={{ marginBottom: "64px" }} ref={form} onSubmit={sendEmail}>
       <div
         style={{
           display: "flex",

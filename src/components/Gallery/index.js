@@ -1,28 +1,5 @@
 import React from "react";
-import { ImageList, ImageListItem } from "@mui/material";
-
-const itemData = [
-  {
-    img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
-    title: "Breakfast",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
-    title: "Burger",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    title: "Camera",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c",
-    title: "Coffee",
-  },
-  {
-    img: "https://images.unsplash.com/photo-1533827432537-70133748f5c8",
-    title: "Hats",
-  },
-];
+import { ImageList, ImageListItem, Typography } from "@mui/material";
 
 function srcset(image, size, rows = 1, cols = 1) {
   return {
@@ -33,31 +10,110 @@ function srcset(image, size, rows = 1, cols = 1) {
   };
 }
 
+function importAll(r) {
+  let images = {};
+
+  r.keys().map((item) => (images[item.replace("./", "")] = r(item)));
+
+  return images;
+}
+
+const images = importAll(
+  require.context("../../assets/images", false, /\.(png|jpe?g|svg)$/)
+);
+
 function Gallery() {
   return (
-    <>
-      <ImageList
-        sx={{ width: 500, height: 500 }}
-        variant="quilted"
-        cols={4}
-        rowHeight={121}
+    <div style={{ marginBottom: "64px" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginBottom: "16px",
+        }}
       >
-        {itemData.map((item) => (
-          <ImageListItem
-            key={item.img}
-            cols={item.cols || 1}
-            rows={item.rows || 1}
-          >
-            <img
-              {...srcset(item.img, 121, item.rows, item.cols)}
-              alt={item.title}
-              loading="lazy"
-            />
-          </ImageListItem>
-        ))}
-      </ImageList>
-    </>
+        <Typography
+          variant="h2"
+          style={{
+            textAlign: "center",
+            padding: "0px 32px 4px 32px",
+            borderBottom: "3px solid pink",
+          }}
+        >
+          Gallery
+        </Typography>
+      </div>
+      <div
+        style={{
+          width: "60%",
+          margin: "auto",
+        }}
+      >
+        <ImageList variant="quilted" cols={4}>
+          {itemData.map((item, i) => (
+            <ImageListItem
+              key={item.title}
+              cols={item.cols || 1}
+              rows={item.rows || 1}
+            >
+              <img
+                {...srcset(item.img, 121, item.rows, item.cols)}
+                alt={item.title}
+                loading="lazy"
+              />
+            </ImageListItem>
+          ))}
+        </ImageList>
+      </div>
+    </div>
   );
 }
+
+const itemData = [
+  {
+    img: images["barney-birthday-cake.png"],
+    title: "Barney Birthday Cake",
+    rows: 2,
+    cols: 2,
+  },
+  {
+    img: images["tiramisu.png"],
+    title: "Tiramisu",
+  },
+  {
+    img: images["red-velvet-christmas.png"],
+    title: "Red Velvet Cake",
+  },
+  {
+    img: images["minnie-mouse-cake.png"],
+    title: "Minnie Mouse Cake",
+  },
+  {
+    img: images["quinceanera.png"],
+    title: "Quinceanera",
+  },
+  {
+    img: images["cupcakes-and-macaroons.png"],
+    title: "Desserts",
+  },
+  {
+    img: images["minnie-cupcakes.png"],
+    title: "Minnie Mouse Cupcakes",
+  },
+  {
+    img: images["mickey-minnie-mouse-birthday.png"],
+    title: "Mickey and Minnie Mouse Birthday",
+    rows: 2,
+    cols: 2,
+  },
+  {
+    img: images["macaroons.png"],
+    title: "Macaroons",
+  },
+  {
+    img: images["birthday-shark.png"],
+    title: "Baby Shark Cake",
+  },
+];
 
 export default Gallery;
