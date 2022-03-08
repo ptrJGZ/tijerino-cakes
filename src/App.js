@@ -1,12 +1,10 @@
 import "./assets/css/style.css";
-import Navbar from "./components/Navbar";
-import Home from "./components/Home";
+import Router from "./components/Router.js";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <Home />
+      <Router />
     </>
   );
 }
