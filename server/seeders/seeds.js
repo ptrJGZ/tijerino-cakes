@@ -18,6 +18,8 @@ db.once("open", async () => {
     userData.push({ username, email, password, isAdmin });
   }
 
+  await User.insertMany(userData);
+
   const productData = [];
 
   const productList = [
@@ -35,8 +37,8 @@ db.once("open", async () => {
     productData.push({ productName: productList[i], price, description });
   }
 
-  console.log(userData);
-  console.log(productData);
+  await Product.insertMany(productData);
 
+  console.log("Finished! Successfully inserted documents!");
   process.exit(0);
 });
