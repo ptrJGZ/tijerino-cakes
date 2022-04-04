@@ -16,6 +16,22 @@ const resolvers = {
 
       return product;
     },
+    updateProduct: async (
+      _,
+      { productId, productName, price, description }
+    ) => {
+      const product = await Product.findByIdAndUpdate(
+        { _id: productId },
+        {
+          productName: productName,
+          price: price,
+          description: description,
+        },
+        { new: true }
+      );
+
+      return product;
+    },
   },
 };
 

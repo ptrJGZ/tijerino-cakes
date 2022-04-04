@@ -26,6 +26,12 @@ const typeDefs = gql`
       price: String!
       description: String!
     ): Product
+    updateProduct(
+      productId: ID!
+      productName: String
+      price: String
+      description: String
+    ): Product
   }
 `;
 
