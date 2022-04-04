@@ -11,6 +11,16 @@ const resolvers = {
   },
   // @todo: test addProduct mutation in GraphQL playground
   Mutation: {
+    login: async (_, { email, password }) => {
+      const user = await User.findOne({ email: email });
+
+      return user;
+    },
+    addUser: async (_, args) => {
+      const user = await User.create(args);
+
+      return user;
+    },
     addProduct: async (_, args) => {
       const product = await Product.create(args);
 
@@ -38,11 +48,6 @@ const resolvers = {
       });
 
       return product;
-    },
-    addUser: async (_, args) => {
-      const user = await User.create(args);
-
-      return user;
     },
   },
 };
