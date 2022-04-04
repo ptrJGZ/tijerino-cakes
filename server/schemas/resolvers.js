@@ -32,6 +32,13 @@ const resolvers = {
 
       return product;
     },
+    deleteProduct: async (_, { productId }) => {
+      const product = await Product.findByIdAndDelete({
+        _id: productId,
+      });
+
+      return product;
+    },
   },
 };
 

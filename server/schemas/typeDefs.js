@@ -32,6 +32,7 @@ const typeDefs = gql`
       price: String
       description: String
     ): Product
+    deleteProduct(productId: ID!): Product
   }
 `;
 
