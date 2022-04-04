@@ -9,6 +9,14 @@ const resolvers = {
       return Product.find({});
     },
   },
+  // @todo: test addProduct mutation in GraphQL playground
+  Mutation: {
+    addProduct: async (_, args) => {
+      const product = await Product.create(args);
+
+      return product;
+    },
+  },
 };
 
 module.exports = resolvers;
