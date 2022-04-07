@@ -14,9 +14,21 @@ const resolvers = {
   // @todo: test addProduct mutation in GraphQL playground
   Mutation: {
     login: async (_, { email, password }) => {
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email });
 
-      return user;
+      if (!user) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
+
+      const isCorrectPassword = await user.isCorrectPassword(password);
+
+      if (!isCorrectPassword) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
+
+      const token = signToken(user);
+
+      return { user, token };
     },
     addUser: async (_, args) => {
       const user = await User.create(args);
