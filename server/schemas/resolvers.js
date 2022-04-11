@@ -11,7 +11,6 @@ const resolvers = {
       return Product.find({});
     },
   },
-  // @todo: test addProduct mutation in GraphQL playground
   Mutation: {
     login: async (_, { email, password }) => {
       const user = await User.findOne({ email });
