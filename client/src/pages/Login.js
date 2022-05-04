@@ -1,16 +1,35 @@
 import React, { useState } from "react";
 import { Typography, TextField, Button } from "@mui/material/";
+import { Link } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { LOGIN_USER } from "../utils/mutations";
+import Auth from "../utils/auth";
 // import Success from "./Success";
 
 function Login() {
-  const [user, setUser] = useState({});
+  const [formState, setFormState] = useState({ email: "", password: "" });
+  const [login, { error }] = useMutation(LOGIN_USER);
 
-  const handleSubmit = () => {
-    console.log(user);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const { data } = await login({
+        variables: { ...formState },
+      });
+
+      Auth.login(data.login.token);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
+  console.log(formState);
+
   const handleChange = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value });
+    const { name, value } = event.target;
+
+    setFormState({ ...formState, [name]: value });
   };
 
   return (
@@ -20,9 +39,9 @@ function Login() {
         <Typography>Cakes &amp; Pastries</Typography>
       </div>
       <form onSubmit={handleSubmit}>
-        <Typography>Username</Typography>
+        <Typography>Email</Typography>
         <TextField
-          name="username"
+          name="email"
           size="small"
           fullWidth
           onChange={(event) => {
@@ -39,9 +58,10 @@ function Login() {
           }}
         />
         <Button variant="contained" type="submit">
-          Login
+          <Link to={"/success"}>Login</Link>
         </Button>
       </form>
+      {error && <div>Login Failed!</div>}
     </section>
   );
 }

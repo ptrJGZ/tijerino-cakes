@@ -14,7 +14,7 @@ class AuthService {
   isTokenExpired(token) {
     try {
       const decoded = decode(token);
-      if (decode.exp < Date.now() / 1000) {
+      if (decoded.exp < Date.now() / 1000) {
         return true;
       } else {
         return false;
@@ -40,3 +40,5 @@ class AuthService {
     window.location.assign("/");
   }
 }
+
+export default new AuthService();
