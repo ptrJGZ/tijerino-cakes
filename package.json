@@ -1,0 +1,26 @@
+{
+  "name": "tijerino-cakes",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ptrJGZ/tijerino-cakes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ptrJGZ/tijerino-cakes/issues"
+  },
+  "homepage": "https://github.com/ptrJGZ/tijerino-cakes#readme",
+  "dependencies": {
+    "concurrently": "^7.1.0"
+  }
+}
