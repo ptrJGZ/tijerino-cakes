@@ -11,3 +11,22 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+
+export const ADD_PRODUCT = gql`
+  mutation addProduct(
+    $productName: String!
+    $price: String!
+    $description: String!
+  ) {
+    addProduct(
+      productName: $productName
+      price: $price
+      description: $description
+    ) {
+      _id
+      productName
+      price
+      description
+    }
+  }
+`;

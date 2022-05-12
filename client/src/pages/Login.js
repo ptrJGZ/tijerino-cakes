@@ -24,8 +24,6 @@ function Login() {
     }
   };
 
-  console.log(formState);
-
   const handleChange = (event) => {
     const { name, value } = event.target;
 
