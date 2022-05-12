@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
+import { QUERY_PRODUCTS } from "../../utils/queries";
 import { ADD_PRODUCT } from "../../utils/mutations";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
@@ -21,7 +22,19 @@ function ProductFormModal({ open, onClose }) {
     description: "",
   });
 
-  const [product, { error }] = useMutation(ADD_PRODUCT);
+  const [addProduct, { error }] = useMutation(ADD_PRODUCT, {
+    update(cache, { data: { addProduct } }) {
+      try {
+        const { products } = cache.readQuery({ query: QUERY_PRODUCTS });
+        cache.writeQuery({
+          query: QUERY_PRODUCTS,
+          data: { products: [...products, addProduct] },
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,7 +46,7 @@ function ProductFormModal({ open, onClose }) {
     event.preventDefault();
 
     try {
-      await product({
+      await addProduct({
         variables: { ...formState },
       });
     } catch (e) {
