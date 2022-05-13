@@ -18,14 +18,20 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
 } from "@mui/icons-material/";
-import ProductFormModal from "../components/ProductFormModal";
+import ProductModal from "../components/ProductModal";
 
 function AdminLandingPage() {
   const [open, setOpen] = useState(false);
+  const [productId, setProductId] = useState("");
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleProductClick = (product) => {
+    setProductId(product._id);
+    handleOpen();
+  };
 
   const products = data?.products || [];
 
@@ -34,7 +40,12 @@ function AdminLandingPage() {
       <Button onClick={handleOpen} variant="contained" endIcon={<AddIcon />}>
         Add Product
       </Button>
-      <ProductFormModal open={open} onClose={handleClose} />
+      <ProductModal
+        open={open}
+        handleClose={handleClose}
+        productId={productId}
+      />
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 512 }}>
           <TableHead>
@@ -58,7 +69,7 @@ function AdminLandingPage() {
                     <IconButton>
                       <EditIcon />
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={() => handleProductClick(product)}>
                       <DeleteIcon />
                     </IconButton>
                   </Stack>
