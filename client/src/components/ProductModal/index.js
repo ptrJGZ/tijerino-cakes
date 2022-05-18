@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { QUERY_PRODUCTS } from "../../utils/queries";
-import { ADD_PRODUCT, DELETE_PRODUCT } from "../../utils/mutations";
+import {
+  ADD_PRODUCT,
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT,
+} from "../../utils/mutations";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
 const style = {
@@ -15,14 +19,12 @@ const style = {
   borderRadius: "3%",
 };
 
-function ProductModal({ open, handleClose, productId }) {
+function ProductModal({ open, handleClose, currentProduct, action }) {
   const [formState, setFormState] = useState({
-    productName: "",
-    price: "",
-    description: "",
+    productName: currentProduct?.productName || "",
+    price: currentProduct?.price || "",
+    description: currentProduct?.description || "",
   });
-
-  // console.log(productId);
 
   const [addProduct, { error }] = useMutation(ADD_PRODUCT, {
     update(cache, { data: { addProduct } }) {
@@ -37,6 +39,8 @@ function ProductModal({ open, handleClose, productId }) {
       }
     },
   });
+
+  const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
   const [deleteProduct] = useMutation(DELETE_PRODUCT, {
     update(cache, { data: { deleteProduct } }) {
@@ -61,9 +65,15 @@ function ProductModal({ open, handleClose, productId }) {
     event.preventDefault();
 
     try {
-      await addProduct({
-        variables: { ...formState },
-      });
+      if (action === "add") {
+        await addProduct({
+          variables: { ...formState },
+        });
+      } else {
+        await updateProduct({
+          variables: { productId: currentProduct._id, ...formState },
+        });
+      }
     } catch (e) {
       console.log(e);
     }
@@ -75,6 +85,7 @@ function ProductModal({ open, handleClose, productId }) {
     event.preventDefault();
 
     try {
+      const { productId } = currentProduct._id;
       await deleteProduct({
         variables: { productId },
       });
@@ -83,23 +94,35 @@ function ProductModal({ open, handleClose, productId }) {
     }
 
     handleClose();
-    // window.location.reload(true);
   };
 
   return (
     <Modal open={open} onClose={handleClose}>
       <Box sx={style}>
         <form onSubmit={handleSubmit}>
-          <Typography>Add Product</Typography>
+          <Typography>{action === "edit" ? "Edit" : "Add"} Product</Typography>
           <Typography>Name</Typography>
-          <TextField name="productName" onChange={handleChange} />
+          <TextField
+            name="productName"
+            defaultValue={currentProduct?.productName}
+            onChange={handleChange}
+          />
           <Typography>Price</Typography>
-          <TextField name="price" onChange={handleChange} />
+          <TextField
+            name="price"
+            defaultValue={currentProduct?.price}
+            onChange={handleChange}
+          />
           <Typography>Description</Typography>
-          <TextField name="description" onChange={handleChange} />
+          <TextField
+            name="description"
+            defaultValue={currentProduct?.description}
+            onChange={handleChange}
+          />
           <Button type="submit">Submit</Button>
           <Button onClick={handleClose}>Cancel</Button>
         </form>
+
         <div>
           <Typography>Delete Product</Typography>
           <Typography>Are you sure you want to delete this item?</Typography>

@@ -22,14 +22,19 @@ import ProductModal from "../components/ProductModal";
 
 function AdminLandingPage() {
   const [open, setOpen] = useState(false);
-  const [productId, setProductId] = useState("");
+  const [currentProduct, setCurrentProduct] = useState({});
+  const [action, setAction] = useState("");
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setCurrentProduct("");
+  };
 
-  const handleProductClick = (product) => {
-    setProductId(product._id);
+  const handleProductClick = (product, action) => {
+    setCurrentProduct(product);
+    setAction(action);
     handleOpen();
   };
 
@@ -37,14 +42,21 @@ function AdminLandingPage() {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="contained" endIcon={<AddIcon />}>
+      <Button
+        onClick={() => handleProductClick({}, "add")}
+        variant="contained"
+        endIcon={<AddIcon />}
+      >
         Add Product
       </Button>
-      <ProductModal
-        open={open}
-        handleClose={handleClose}
-        productId={productId}
-      />
+      {open && (
+        <ProductModal
+          open={open}
+          handleClose={handleClose}
+          currentProduct={currentProduct}
+          action={action}
+        />
+      )}
 
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 512 }}>
@@ -66,7 +78,9 @@ function AdminLandingPage() {
                 <TableCell>{product.description}</TableCell>
                 <TableCell>
                   <Stack direction="row" spacing={1}>
-                    <IconButton>
+                    <IconButton
+                      onClick={() => handleProductClick(product, "edit")}
+                    >
                       <EditIcon />
                     </IconButton>
                     <IconButton onClick={() => handleProductClick(product)}>

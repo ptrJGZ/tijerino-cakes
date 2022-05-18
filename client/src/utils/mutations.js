@@ -39,3 +39,24 @@ export const DELETE_PRODUCT = gql`
     }
   }
 `;
+
+export const UPDATE_PRODUCT = gql`
+  mutation updateProduct(
+    $productId: ID!
+    $productName: String!
+    $price: String!
+    $description: String!
+  ) {
+    updateProduct(
+      productId: $productId
+      productName: $productName
+      price: $price
+      description: $description
+    ) {
+      _id
+      productName
+      price
+      description
+    }
+  }
+`;
